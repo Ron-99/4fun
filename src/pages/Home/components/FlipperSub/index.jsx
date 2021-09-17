@@ -29,9 +29,9 @@ function FlipperSub({img, endDate ,initialDate = new Date()}){
   }
 
   function formatTime(){
-    const hours = zeroPad(initialDate.getUTCHours());
+    const hours = zeroPad(initialDate.getHours());
     const minutes = zeroPad(initialDate.getMinutes());
-    return `${hours}h${minutes}m`
+    return `${hours}h${minutes}m (Brasilia)`
   }
 
   return(
