@@ -82,8 +82,6 @@ function RegisterForm({season}){
         abortEarly: false,
       });
 
-      console.log('teste')
-
       const subscription = {
         driverId: nicknameExists?.driverId,
         seasonId: season

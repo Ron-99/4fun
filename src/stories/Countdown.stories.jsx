@@ -1,18 +1,13 @@
-import Index from "../components/Countdown";
+import Countdown from "../components/Countdown";
 
 export default {
-  title: 'Atoms/Index',
-  component: Index
+  title: 'Atoms/Countdown',
+  component: Countdown
 }
 
-const Template = (args) => <Index {...args} />;
+const Template = (args) => <Countdown {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  year: 2021,
-  month: 9,
-  day: 29,
-  hour: 18,
-  minute: 0,
-  second: 0
+  date: new Date()
 }

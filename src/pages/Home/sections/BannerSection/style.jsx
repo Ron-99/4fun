@@ -44,6 +44,7 @@ export const ButtonsWrapper = styled.div `
     button{
       margin-bottom: 20px;
       margin-right: 0;
+      width: 100%;
     }
   }
 `

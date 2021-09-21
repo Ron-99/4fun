@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { hexToRgba } from "../../utils";
 import {NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export const HeaderWrapper = styled.header `
   width: 100%;
@@ -149,4 +150,20 @@ export const ButtonWrapper = styled.div `
     height: 40vh;
     flex-direction: row;
   }
+`
+
+export const TextWrapper = styled.div `
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const Icon = styled(FontAwesomeIcon) `
+  color: ${({theme}) => theme.color.neutral100};
+  margin: 0 10px;
+`
+
+export const Logout = styled.a `
+  cursor: pointer;
+  
 `
