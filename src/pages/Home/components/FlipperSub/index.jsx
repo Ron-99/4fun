@@ -13,13 +13,13 @@ import {useState} from "react";
 import {useHistory} from 'react-router-dom';
 import {zeroPad} from "react-countdown";
 
-function FlipperSub({img, endDate ,initialDate = new Date()}){
+function FlipperSub({img, id, endDate ,initialDate = new Date()}){
 
   const [flipper, setFlipper] = useState(false)
   const history = useHistory();
 
-  function redirect(id) {
-    history.push(`signup/1`)
+  function redirect() {
+    history.push(`signup/${id}`)
   }
 
   function formatDate(){

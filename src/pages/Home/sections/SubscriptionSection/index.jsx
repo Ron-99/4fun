@@ -27,7 +27,7 @@ function SubscriptionSection() {
         {
           isLoading ? <PacmanLoader color={theme.color.neutral100} size={100} margin={2}/> :
           data.map(value => (
-              value.category !== 'F1 2020' && <FlipperSub img={value.urlimage} initialDate={new Date(value.initialdate)} endDate={new Date(value.date)} />
+              value.category !== 'F1 2020' && <FlipperSub key={value.id} id={value.id} img={value.urlimage} initialDate={new Date(value.initialdate)} endDate={new Date(value.date)} />
           ))
         }
 
