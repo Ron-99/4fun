@@ -1,21 +1,17 @@
-import {RegisterButton, RegisterFormStyle} from "./style";
+import { RegisterButton, RegisterFormStyle } from "./style";
 import Input from "../../../../components/Input";
-import {useRef, useState} from "react";
+import { useRef, useState } from "react";
 import Button from "../../../../components/Button";
-import {useNicknameExistsQuery} from "../../../../services/Drivers/nicknameExistsQuery";
-import {useNumberExistsQuery} from "../../../../services/Drivers/numberExistsQuery";
-import {useEmailExistsQuery} from "../../../../services/Users/emailExistsQuery";
-import {useCreateSubscription} from "../../../../services/Subscription/createSubscriptionMutation";
-import {useCreateDriver} from "../../../../services/Drivers/createDriverMutation";
-import {useCreateUser} from "../../../../services/Users/createUserMutation";
+import { useNicknameExistsQuery } from "../../../../services/Drivers/nicknameExistsQuery";
+import { useNumberExistsQuery } from "../../../../services/Drivers/numberExistsQuery";
+import { useEmailExistsQuery } from "../../../../services/Users/emailExistsQuery";
+import { useCreateDriver } from "../../../../services/Drivers/createDriverMutation";
+import { useCreateUser } from "../../../../services/Users/createUserMutation";
 import { useAlert } from "react-alert";
 import * as Yup from "yup";
+import { useHistory } from "react-router-dom";
 
-
-
-
-function RegisterForm({season}){
-
+function RegisterForm() {
   // States
   const [email, setEmail] = useState("");
   const [nickName, setNickname] = useState("");
@@ -25,24 +21,33 @@ function RegisterForm({season}){
   const formRef = useRef(null);
 
   // Queries
-  const { refetch: refetchEmail } = useEmailExistsQuery(email, season);
-  const { refetch: refetchNickname} = useNicknameExistsQuery(nickName, season)
-  const { refetch: refetchNumber } = useNumberExistsQuery(number, season);
+  const { refetch: refetchEmail } = useEmailExistsQuery(email);
+  const { refetch: refetchNickname } = useNicknameExistsQuery(nickName);
+  const { refetch: refetchNumber } = useNumberExistsQuery(number);
 
   // Mutations
-  const mutationSubscription = useCreateSubscription();
   const mutationDriver = useCreateDriver();
   const mutationUser = useCreateUser();
 
   // Alert
   const alert = useAlert();
 
-  const handleSubmit = async(data) => {
-    try{
+  // History
+  const history = useHistory();
 
-      const { data: emailExists } = await refetchEmail();
-      const { data: nicknameExists } = await refetchNickname();
-      const { data: numberExists } = await refetchNumber();
+  const handleSubmit = async (data) => {
+    try {
+      const {
+        data: { userExists },
+      } = await refetchEmail();
+      const {
+        data: { nicknameExists },
+      } = await refetchNickname();
+      const {
+        data: { numberExists },
+      } = await refetchNumber();
+
+      console.log(userExists, nicknameExists, numberExists);
 
       formRef.current.setErrors({});
       const schema = Yup.object().shape({
@@ -53,10 +58,10 @@ function RegisterForm({season}){
           .test({
             name: "nicknameExists",
             message: "Nickname já possui cadatrado",
-            test: () => !nicknameExists?.driverExists,
+            test: () => !nicknameExists,
           }),
         number: Yup.number()
-          .typeError('Apenas números são aceitos')
+          .typeError("Apenas números são aceitos")
           .required("Campo Obrigatório")
           .test({
             name: "numberExists",
@@ -69,65 +74,53 @@ function RegisterForm({season}){
           .test({
             name: "emailExists",
             message: "Email já possui cadastro",
-            test: () => !emailExists?.seasonSub,
+            test: () => !userExists,
           }),
         password: Yup.string().required("Campo Obrigatório"),
         confirmPassword: Yup.string().oneOf(
           [Yup.ref("password"), null],
           "As senhas não coincidem"
         ),
-      })
+      });
 
       await schema.validate(data, {
         abortEarly: false,
       });
 
-      const subscription = {
-        driverId: nicknameExists?.driverId,
-        seasonId: season
-      }
       const driver = {
         nickName: data.nickName.toLowerCase(),
         number: data.number,
-        penaltyId: 1
-      }
+        penaltyId: 1,
+      };
 
       const user = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
+        firstName: data.firstName.toLowerCase(),
+        lastName: data.lastName.toLowerCase(),
+        email: data.email.toLowerCase(),
         password: data.password,
-        role: 'USER',
-        mobilePhoneNumber: data.phone
-      }
+        role: "USER",
+        mobilePhoneNumber: data.phone,
+      };
 
-      if(emailExists.userExists){
-        mutationSubscription.mutate(subscription);
-      }else{
-        const d = await mutationDriver.mutateAsync(driver);
-        user.driverId = d.id;
-        mutationUser.mutate(user);
-        subscription.driverId = d.id;
-        mutationSubscription.mutate(subscription);
-      }
-      alert.success('Cadastro efetuado com sucesso!!')
-      formRef.current.reset()
+      const d = await mutationDriver.mutateAsync(driver);
+      user.driverId = d.id;
+      await mutationUser.mutateAsync(user);
 
-    }catch (err) {
+      alert.success("Cadastro efetuado com sucesso!!");
+      formRef.current.reset();
+      history.go(0);
+    } catch (err) {
       const validationErrors = {};
-
       if (err instanceof Yup.ValidationError) {
         err.inner.forEach((error) => {
           validationErrors[error.path] = error.message;
         });
         formRef.current.setErrors(validationErrors);
       }
-
-      alert.error('Algo deu errado')
     }
-  }
+  };
 
-  return(
+  return (
     <RegisterFormStyle ref={formRef} onSubmit={handleSubmit}>
       <Input label="Nome" name="firstName" placeholder="Seu Nome" />
       <Input label="Sobrenome" name="lastName" placeholder="Seu Sobrenome" />
@@ -173,10 +166,10 @@ function RegisterForm({season}){
       />
 
       <RegisterButton>
-        <Button type='submit' >Inscrever-se</Button>
+        <Button type="submit">Inscrever-se</Button>
       </RegisterButton>
     </RegisterFormStyle>
-  )
+  );
 }
 
 export default RegisterForm;

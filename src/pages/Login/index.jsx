@@ -37,10 +37,13 @@ function Login() {
         err.inner.forEach((error) => {
           validationErrors[error.path] = error.message;
         });
-        formRef.current.setErrors(validationErrors);
+        
+      }
+      if(err.response){
+        validationErrors.password = 'Usuário/Senha incorretos'
       }
 
-      alert.error('Algo deu errado')
+      formRef.current.setErrors(validationErrors);
     }
   }
 

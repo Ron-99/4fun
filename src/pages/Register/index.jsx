@@ -1,5 +1,4 @@
 import Text from "../../components/Text";
-import { useParams } from "react-router-dom";
 import {RegisterPage} from "./style";
 import Title from "../../components/Title";
 import RegisterForm from "./components/RegisterForm";
@@ -7,7 +6,6 @@ import {BannerWrapper} from "../../styles/global";
 
 
 function Register(){
-  const { id } = useParams();
 
   return(
     <>
@@ -17,7 +15,7 @@ function Register(){
       </BannerWrapper>
 
       <RegisterPage>
-        <RegisterForm season={id}/>
+        <RegisterForm/>
       </RegisterPage>
     </>
   )

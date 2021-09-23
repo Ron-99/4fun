@@ -1,9 +1,9 @@
 import api from "../../utils/api";
 import {useQuery} from "react-query";
 
-export function useNicknameExistsQuery(nickname, season) {
+export function useNicknameExistsQuery(nickname) {
   const nicknameExists = async () => {
-    const { data } = await api.get( `/drivers/exists?nickname=${nickname}&season=${season}` );
+    const { data } = await api.get( `/drivers/exists?nickname=${nickname.toLowerCase()}` );
     return data;
   }
 

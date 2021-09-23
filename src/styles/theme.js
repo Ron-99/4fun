@@ -3,6 +3,7 @@ export const theme = {
     primary: '#F32C46',
     secondary: '#202329',
     error: '#F32C46',
+    confirm: '#10ac84',
     neutral800: '#04080F',
     neutral700: '#11161E',
     neutral600: '#282D34',

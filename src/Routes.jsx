@@ -9,7 +9,7 @@ import {useIsAuthQuery} from "./services/Users/isAuthQuery";
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/signin', name: 'Login', component: Login },
-  { path: '/signup/:id', name: 'Register', component: Register },
+  { path: '/signup', name: 'Login', component: Register },
   { path: '/admin/subscriptions', name: 'Adm', component: Adm, privateRoute: true, admin: true },
 ]
 

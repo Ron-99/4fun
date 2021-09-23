@@ -5,6 +5,7 @@ import Routes from "./Routes";
 import {GlobalStyle} from "./styles/global";
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
+import ModalProvider from "./context/Modal";
 
 const queryClient = new QueryClient();
 const options = {
@@ -19,8 +20,10 @@ function App() {
     <QueryClientProvider client={queryClient} contextSharing={true}>
       <AlertProvider template={AlertTemplate} {...options}>
         <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <Routes />
+          <ModalProvider>
+            <GlobalStyle />
+            <Routes />
+          </ModalProvider>
         </ThemeProvider>
       </AlertProvider>
     </QueryClientProvider>

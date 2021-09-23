@@ -2,7 +2,7 @@ import {BannerSectionStyle, ButtonsWrapper, Follow, IntroductionWrapper, Link, S
 import Title from "../../../../components/Title";
 import Text from "../../../../components/Text";
 import Button from "../../../../components/Button";
-import Twitch from "../../../../assets/imgs/twitch.svg";
+import Instagram from "../../../../assets/imgs/instagram.svg";
 import Youtube from "../../../../assets/imgs/youtube.svg";
 import Discord from "../../../../assets/imgs/discord.svg";
 import AnchorLink from "react-anchor-link-smooth-scroll";
@@ -25,8 +25,8 @@ function BannerSection() {
       <Follow>
         <Title typography='h4'>SIGA-NOS</Title>
         <SocialsMedia>
-          <Link>
-            <Social src={Twitch} />
+          <Link href='https://www.instagram.com/liga4f/' target='_blank'>
+            <Social src={Instagram} />
           </Link>
 
           <Link href='https://youtube.com/channel/UCP7rkgjn_0tTW0fIJJY8gfw' target='_blank'>
